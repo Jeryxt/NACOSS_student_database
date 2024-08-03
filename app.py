@@ -12,3 +12,23 @@ app.config['MYSQL_DB'] = 'student_database'
 
 
 mysql = MySQL(app)
+
+
+
+
+@app.route('/insert', methods=['POST'])
+def insert():
+
+    if request.method == "POST":
+        flash('Data Inserted Successfully')
+
+        First_name = request.form['First Name']
+        Last_name = request.form['Last Name']
+        Email = request.form['Email']
+        Phone_Number = request.form['Phone Number']
+
+        cur = mysql.connection.cursor()
+        cur.execute('INSERT INTO students  (First_name, Last_name, Email, Phone_Number) VALUES(%s, %s, %s, %s)', (First_name, Last_name, Email, Phone_Number))
+        mysql.connection.commit()
+        return redirect(url_for('Index'))
+
